@@ -1,6 +1,6 @@
 package main
 
-import "../server/cmd"
+import "./cmd"
 
 func main() {
 	cmd.Execute()

@@ -14,7 +14,7 @@
 
 package main
 
-import "../client/cmd"
+import "./cmd"
 
 func main() {
 	cmd.Execute()
