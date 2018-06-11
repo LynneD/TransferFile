@@ -4,7 +4,7 @@ import (
 "google.golang.org/grpc"
 "os"
 "log"
-pb "../../transferfile"
+pb "TransferFile/transferfile"
 "context"
 "time"
 "io"

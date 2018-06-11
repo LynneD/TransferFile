@@ -4,7 +4,7 @@ import (
 	"net"
 	"log"
 	"google.golang.org/grpc"
-	pb "../../transferfile"
+	pb "TransferFile/transferfile"
 	"os"
 	"io"
 	"crypto/md5"
