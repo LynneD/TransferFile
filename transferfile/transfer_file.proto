@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package transferfile;
+
+service TransferFile {
+    rpc SendFile(stream SendFileRequest) returns (SendFileResponse) {}
+}
+
+message SendFileRequest {
+    string fileName = 1;
+    string md5Sum = 2;
+    bytes data = 3;
+}
+
+message SendFileResponse {
+    int64 bytesWritten = 1;
+    repeated string md5Sum = 2;
+}
