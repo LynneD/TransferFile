@@ -1,6 +1,6 @@
 package main
 
-import "TransferFile/server/cmd"
+import "github.com/LynneD/TransferFile/server/cmd"
 
 func main() {
 	cmd.Execute()

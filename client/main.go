@@ -14,7 +14,7 @@
 
 package main
 
-import "TransferFile/client/cmd"
+import "github.com/LynneD/TransferFile/client/cmd"
 
 func main() {
 	cmd.Execute()
