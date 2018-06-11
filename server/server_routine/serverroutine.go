@@ -12,8 +12,11 @@ import (
 	"errors"
 	"sync"
 	"time"
+	"path"
+	"path/filepath"
 )
 
+const clientfiledir = "/clientfile"
 
 
 type myMap struct {
@@ -74,7 +77,7 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 		fmt.Println(md5str)
 		md5array = append(md5array, md5str)
 
-		fileName = sendFileRequest.FileName
+		fileName = "_" + filepath.Base(sendFileRequest.FileName)
 		f := openFile(fileName)
 
 		// write to file.
@@ -94,7 +97,11 @@ func openFile(fileName string) (io.Writer){
 
 	if writer == nil {
 		//create file
-		f, err := os.Create(fileName)
+		newPath := path.Join(clientfiledir, fileName)
+		storingDir, _ := os.Getwd()
+		fmt.Println(storingDir)
+		f, err := os.Create(newPath)
+		//f, err := os.Create(fileName)
 		if err != nil {
 			f.Close()
 			log.Fatalf("create file %v failed: %v", fileName, err)
@@ -106,8 +113,17 @@ func openFile(fileName string) (io.Writer){
 }
 
 
-
+//filepath.Split
+//filepath.Join
 func ServerRoutine(host string, port string) {
+	storingDir, _ := os.Executable()//os executable
+	if _, err := os.Stat(filepath.Join(storingDir, clientfiledir)); os.IsNotExist(err) {
+		err := os.Mkdir(filepath.Join(storingDir, clientfiledir), os.ModePerm)
+		if err != nil {
+			log.Fatalf("create directory error: %v", err)
+		}
+	}
+
 	writerMap.m = make(map[string]io.WriteCloser)
 	lis, err := net.Listen("tcp", ":" + port)
 	if err != nil {

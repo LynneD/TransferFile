@@ -11,11 +11,12 @@ pb "github.com/LynneD/TransferFile/transferfile"
 "fmt"
 "crypto/md5"
 "reflect"
+	"path/filepath"
 )
 
 
-const filename = "test.txt"
-var remotefilename string
+var filename string //etwd Join
+//var remotefilename string
 var md5array []string
 var length int
 
@@ -59,7 +60,7 @@ func sendFile(client pb.TransferFileClient) {
 		md5array = append(md5array, md5str)
 
 		//send
-		sendFileRequest := &pb.SendFileRequest{FileName: remotefilename, Md5Sum:md5str, Data:buf[:n]}
+		sendFileRequest := &pb.SendFileRequest{FileName: filename, Md5Sum:md5str, Data:buf[:n]}
 		if err := stream.Send(sendFileRequest); err != nil {
 			errorCount++
 			log.Fatalf("%v.Send(%v) = %v", stream, sendFileRequest, err)
@@ -77,7 +78,7 @@ func sendFile(client pb.TransferFileClient) {
 	fmt.Println(reflect.DeepEqual(md5array, sendFileResponse.Md5Sum))
 }
 
-func ClientRoutine(chunksize int, host string, port string, filename string) {
+func ClientRoutine(chunksize int, host string, port string, fileName string) {
 	address := host + ":" + port
 	conn, err := grpc.Dial(address, grpc.WithInsecure())
 	if err != nil {
@@ -86,7 +87,9 @@ func ClientRoutine(chunksize int, host string, port string, filename string) {
 	defer conn.Close()
 
 	length = chunksize
-	remotefilename = filename
+
+	workingDir, err := os.Getwd()
+	filename = filepath.Join(workingDir, fileName)
 
 	client := pb.NewTransferFileClient(conn)
 

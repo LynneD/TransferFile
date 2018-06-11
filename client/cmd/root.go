@@ -68,6 +68,6 @@ func init() {
 	rootCmd.Flags().IntVarP(&chunksize, "chunksize", "s", 1024, "The chunk's size transferred")
 	rootCmd.Flags().StringVarP(&host, "host", "H", "", "The host you want to connect")
 	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port you use to talk to the host")
-	rootCmd.Flags().StringVarP(&filename, "filename", "n", "", "The file you want to store remotely")
+	rootCmd.Flags().StringVarP(&filename, "filename", "f", "", "The file you want to store remotely")
 }
 
