@@ -28,6 +28,6 @@ Flags:
   -p, --port string   The port you use to talk to the host
   
   
-  There is a test file at the client directory, you can use it to test the project.
+There is a test file at the client directory, you can use it to test the project.
   
-  The timeout for client's context is 20s now and server will sleep 5s after it gets the chunk from one client to make two clients transfer files at the same time. Please adjust the time as needed.
+The timeout for client's context is 20s now and server will sleep 5s after it gets the chunk from one client to make two clients transfer files at the same time. Please adjust the time as needed.
