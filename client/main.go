@@ -14,7 +14,7 @@
 
 package main
 
-import "awesomeProject/TransferFile/client/cmd"
+import "../client/cmd"
 
 func main() {
 	cmd.Execute()

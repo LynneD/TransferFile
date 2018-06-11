@@ -19,7 +19,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"awesomeProject/TransferFile/client/client_routine"
+	"../../client/client_routine"
 )
 
 var chunksize int

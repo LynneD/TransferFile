@@ -19,7 +19,7 @@ import (
 "os"
 
 "github.com/spf13/cobra"
-"awesomeProject/TransferFile/server/server_routine"
+"../../server/server_routine"
 )
 
 var host string

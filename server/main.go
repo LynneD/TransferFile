@@ -1,6 +1,6 @@
 package main
 
-import "awesomeProject/TransferFile/server/cmd"
+import "../server/cmd"
 
 func main() {
 	cmd.Execute()
