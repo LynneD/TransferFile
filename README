@@ -1,0 +1,33 @@
+This project transfers files from client and stores the file at the server side. The server can serve multiple clients at the same time.
+
+The command line for client:
+./client
+The client will connect to the server(host:port) and transfer file by truncating it to several chunks whose size is defined by the parameter
+           
+Usage:
+  client [flags]
+
+Flags:
+  -s, --chunksize int     The chunk's size transferred (default 1024)
+  -n, --filename string   The file you want to store remotely
+  -h, --help              help for client
+  -H, --host string       The host you want to connect
+  -p, --port string       The port you use to talk to the host
+  
+
+The command line for server:
+./server
+The server can serve multiple clients at the same time storing files received from clients
+
+Usage:
+  server [flags]
+
+Flags:
+  -h, --help          help for server
+  -H, --host string   The host you want to connect
+  -p, --port string   The port you use to talk to the host
+  
+  
+There is a test file at the client directory, you can use it to test the project.
+  
+The timeout for client's context is 20s now and server will sleep 5s after it gets the chunk from one client to make two clients transfer files at the same time. Please adjust the time as needed.
