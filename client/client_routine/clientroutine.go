@@ -11,7 +11,6 @@ pb "github.com/LynneD/TransferFile/transferfile"
 "fmt"
 "crypto/md5"
 "reflect"
-	"path/filepath"
 )
 
 
@@ -88,8 +87,7 @@ func ClientRoutine(chunksize int, host string, port string, fileName string) {
 
 	length = chunksize
 
-	workingDir, err := os.Getwd()
-	filename = filepath.Join(workingDir, fileName)
+	filename = fileName
 
 	client := pb.NewTransferFileClient(conn)
 
