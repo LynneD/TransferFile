@@ -14,7 +14,7 @@ import (
 	"path/filepath"
 )
 
-const clientfiledir = "tmp/clientfile"
+const clientfiledir = "/tmp/clientfile"
 
 type myMap struct {
 	mu sync.Mutex
@@ -120,7 +120,7 @@ func openFile(fileName string) (io.Writer){
 //filepath.Join
 func ServerRoutine(host string, port string) {
 	if _, err := os.Stat(clientfiledir); os.IsNotExist(err) {
-		err := os.Mkdir(clientfiledir, os.ModePerm)
+		err := os.MkdirAll(clientfiledir, os.ModePerm)
 		if err != nil {
 			log.WithFields(log.Fields{clientfiledir:"Create Dir"}).Info("Creating directory fails")
 		}
