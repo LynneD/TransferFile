@@ -65,7 +65,7 @@ func sendFile(client pb.TransferFileClient) {
 				break
 			}
 			errorCount++
-			log.Fatalf("%v.Send(%v) = %v", stream, sendFileRequest, err)
+			log.Fatalf("%v.Send(%v), error: %v", stream, sendFileRequest.FileName, err)
 		} else {
 			errorCount = 0
 		}
