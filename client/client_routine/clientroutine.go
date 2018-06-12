@@ -61,6 +61,9 @@ func sendFile(client pb.TransferFileClient) {
 		//send
 		sendFileRequest := &pb.SendFileRequest{FileName: filename, Md5Sum:md5str, Data:buf[:n]}
 		if err := stream.Send(sendFileRequest); err != nil {
+			if err == io.EOF {
+				break
+			}
 			errorCount++
 			log.Fatalf("%v.Send(%v) = %v", stream, sendFileRequest, err)
 		} else {
