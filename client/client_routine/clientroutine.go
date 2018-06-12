@@ -69,6 +69,7 @@ func sendFile(client pb.TransferFileClient) {
 		} else {
 			errorCount = 0
 		}
+		time.Sleep(5*time.Second)
 	}
 
 	// close stream and receive result from server

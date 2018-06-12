@@ -2,7 +2,7 @@ package server_routine
 
 import (
 	"net"
-	"log"
+	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	pb "github.com/LynneD/TransferFile/transferfile"
 	"os"
@@ -11,12 +11,11 @@ import (
 	"fmt"
 	"errors"
 	"sync"
-	"time"
 	"path"
 	"path/filepath"
 )
 
-const clientfiledir = "/clientfile"
+const clientfiledir = "tmp/clientfile"
 
 
 type myMap struct {
@@ -64,7 +63,7 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 		}
 		if err != nil {
 			writerMap.Value(fileName).Close()
-			log.Fatal("stream recv data fail")
+			log.WithFields(log.Fields{fileName: sendFileRequest.Md5Sum}).Info("stream receiving file data fails")
 			return err
 		}
 
@@ -72,22 +71,28 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 		md5str := fmt.Sprintf("%x", chechSum)
 		if sendFileRequest.Md5Sum != md5str {
 			writerMap.Value(fileName).Close()
+			log.WithFields(log.Fields{fileName:md5str}).Info("Wrong file data received")
 			return errors.New("wrong file data.")
 		}
+
 		fmt.Println(md5str)
 		md5array = append(md5array, md5str)
 
-		fileName = "_" + filepath.Base(sendFileRequest.FileName)
+		fileName = filepath.Base(sendFileRequest.FileName)
 		f := openFile(fileName)
 
+		if f == nil {
+			return errors.New("creating file fails")
+		}
 		// write to file.
 		n, err := f.Write(sendFileRequest.Data)
 		if err != nil {
 			writerMap.Value(fileName).Close()
-			return err
+			log.WithFields(log.Fields{fileName:"Write"}).Info("Writing to file fails")
+			return errors.New("fail when writing to file")
 		}
 		sum += int64(n)
-		time.Sleep(5*time.Second)
+
 	}
 }
 
@@ -104,7 +109,8 @@ func openFile(fileName string) (io.Writer){
 		//f, err := os.Create(fileName)
 		if err != nil {
 			f.Close()
-			log.Fatalf("create file %v failed: %v", fileName, err)
+			log.WithFields(log.Fields{fileName:"create file"}).Info("Creating file fails")
+			return nil
 		}
 		//add to map
 		writerMap.Add(fileName, f)
@@ -120,7 +126,7 @@ func ServerRoutine(host string, port string) {
 	if _, err := os.Stat(filepath.Join(storingDir, clientfiledir)); os.IsNotExist(err) {
 		err := os.Mkdir(filepath.Join(storingDir, clientfiledir), os.ModePerm)
 		if err != nil {
-			log.Fatalf("create directory error: %v", err)
+			log.WithFields(log.Fields{clientfiledir:"Create Dir"}).Info("Creating directory fails")
 		}
 	}
 
@@ -132,5 +138,4 @@ func ServerRoutine(host string, port string) {
 	s := grpc.NewServer()
 	pb.RegisterTransferFileServer(s, &myServer{})
 	s.Serve(lis)
-
 }
