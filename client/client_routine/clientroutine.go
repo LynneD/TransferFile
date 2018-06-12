@@ -29,6 +29,7 @@ func sendFile(client pb.TransferFileClient) {
 		log.Fatalf("%v.SendFile(_) = _, %v", client, err)
 	}
 
+
 	f, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("Open file %v failed, %v", filename, err)

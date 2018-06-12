@@ -11,12 +11,10 @@ import (
 	"fmt"
 	"errors"
 	"sync"
-	"path"
 	"path/filepath"
 )
 
 const clientfiledir = "tmp/clientfile"
-
 
 type myMap struct {
 	mu sync.Mutex
@@ -102,9 +100,8 @@ func openFile(fileName string) (io.Writer){
 
 	if writer == nil {
 		//create file
-		newPath := path.Join(clientfiledir, fileName)
-		storingDir, _ := os.Getwd()
-		fmt.Println(storingDir)
+
+		newPath := filepath.Join(clientfiledir, fileName)
 		f, err := os.Create(newPath)
 		//f, err := os.Create(fileName)
 		if err != nil {
@@ -122,9 +119,8 @@ func openFile(fileName string) (io.Writer){
 //filepath.Split
 //filepath.Join
 func ServerRoutine(host string, port string) {
-	storingDir, _ := os.Executable()//os executable
-	if _, err := os.Stat(filepath.Join(storingDir, clientfiledir)); os.IsNotExist(err) {
-		err := os.Mkdir(filepath.Join(storingDir, clientfiledir), os.ModePerm)
+	if _, err := os.Stat(clientfiledir); os.IsNotExist(err) {
+		err := os.Mkdir(clientfiledir, os.ModePerm)
 		if err != nil {
 			log.WithFields(log.Fields{clientfiledir:"Create Dir"}).Info("Creating directory fails")
 		}
