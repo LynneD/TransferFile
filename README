@@ -1,5 +1,9 @@
 This project transfers files from client and stores the file at the server side. The server can serve multiple clients at the same time.
 
+Please use 
+        go get github.com/LynneD/TransferFile 
+to download the file into your working directory
+        
 The command line for client:
 ./client
 The client will connect to the server(host:port) and transfer file by truncating it to several chunks whose size is defined by the parameter
@@ -30,4 +34,4 @@ Flags:
   
 There is a test file at the client directory, you can use it to test the project.
   
-The timeout for client's context is 20s now and server will sleep 5s after it gets the chunk from one client to make two clients transfer files at the same time. Please adjust the time as needed.
+The timeout for client's context is 20s now and client will sleep 5s after it sends the chunk to server. The purpose of this is to make two clients transfer files at the same time. Please adjust the time as needed.
