@@ -127,9 +127,9 @@ func ServerRoutine(host string, port string) {
 	}
 
 	writerMap.m = make(map[string]io.WriteCloser)
-	lis, err := net.Listen("tcp", ":" + port)
+	lis, err := net.Listen("tcp", host + ":" + port)
 	if err != nil {
-		log.Fatalf("fail to listen on port%v, %v", port, err)
+		log.Fatalf("fail to listen on %v:%v, %v", host, port, err)
 	}
 	s := grpc.NewServer()
 	pb.RegisterTransferFileServer(s, &myServer{})
