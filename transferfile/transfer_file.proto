@@ -3,7 +3,10 @@ syntax = "proto3";
 package transferfile;
 
 service TransferFile {
-    rpc SendFile(stream SendFileRequest) returns (SendFileResponse) {}
+    rpc StoreSourceFile(stream SendFileRequest) returns (SendFileResponse) {}
+    rpc EnumerateFiles(GetFileListRequest) returns (GetFileListResponse) {}
+    rpc GetPVC(GetPVCRequest) returns (GetPVCResponse) {}
+    rpc DistributeResults(stream DistributeResultsRequest) returns (DistributeResultResponse) {}
 }
 
 message SendFileRequest {
@@ -13,6 +16,34 @@ message SendFileRequest {
 }
 
 message SendFileResponse {
+    int64 bytesWritten = 1;
+    repeated string md5Sum = 2;
+}
+
+message GetFileListRequest {
+    string regExp = 1;
+}
+
+message GetFileListResponse {
+    repeated string fileName = 1;
+}
+
+message GetPVCRequest {
+    repeated string fileName = 1;
+}
+
+//relation between files and pvcs?
+message GetPVCResponse {
+    repeated string pvc = 1;
+}
+
+message DistributeResultsRequest {
+    string fileName = 1;
+    string md5Sum = 2;
+    bytes data = 5;
+}
+
+message DistributeResultResponse {
     int64 bytesWritten = 1;
     repeated string md5Sum = 2;
 }

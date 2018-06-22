@@ -24,6 +24,7 @@ import (
 
 var host string
 var port string
+var volumeprovider string
 
 
 // rootCmd represents the base command when called without any subcommands
@@ -38,8 +39,7 @@ var rootCmd = &cobra.Command{
 			cmd.Help()
 			return
 		}
-		server_routine.ServerRoutine(host, port)
-
+		server_routine.ServerRoutine(host, port, volumeprovider)
 	},
 }
 
@@ -64,8 +64,8 @@ func init() {
 	// when this action is called directly.
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
-	rootCmd.Flags().StringVarP(&host, "host", "H", "", "The host you want to connect")
-	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port you use to talk to the host")
-
+	rootCmd.Flags().StringVarP(&host, "host", "H", "0.0.0.0", "The host you want to connect")
+	rootCmd.Flags().StringVarP(&port, "port", "p", "17361", "The port you use to talk to the host")
+	rootCmd.Flags().StringVarP(&volumeprovider, "volumeprovider", "P", "", "The provider's name of the volume you use")
 }
 
