@@ -5,51 +5,20 @@ import (
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	pb "github.com/LynneD/TransferFile/transferfile"
-	"os"
 	"io"
 	"crypto/md5"
 	"fmt"
 	"errors"
-	"sync"
 	"path/filepath"
 	//"github.com/LynneD/TransferFile/server/get_volume"
-	"github.com/golang/groupcache/consistenthash"
-	"strconv"
+	"bytes"
+
+	"context"
+
+	"time"
 )
 
-var pvcpath map[string]string
-
-var hashtable = consistenthash.New(1, nil)
-
-
-type myMap struct {
-	mu sync.Mutex
-	m map[string]io.WriteCloser
-}
-
-func (ma *myMap) Add(k string , v io.WriteCloser) {
-	ma.mu.Lock()
-	ma.m[k] = v
-	ma.mu.Unlock()
-}
-
-func (ma *myMap) Value(k string) (v io.WriteCloser) {
-	ma.mu.Lock()
-	_, exist := ma.m[k]
-	if exist == true {
-		v = ma.m[k]
-	} else {
-		v = nil
-	}
-	ma.mu.Unlock()
-	return v
-}
-
-var writerMap myMap
-
-//interface locally
-//           portworx vol
-//           gcp pd
+var pxStoreFile *PxStoreFile
 
 type myServer struct {
 }
@@ -58,19 +27,33 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 	var sum int64 = 0
 	var md5array []string
 	var fileName string
+	ctx := stream.Context()
+	ctx1, cancel1 := context.WithTimeout(ctx, 5 * time.Second)
+	defer cancel1()
 
+	//Loop:
 	for {
-		//receive data
+		//select {
+		//case <-ctx.Done():
+		//	log.WithFields(log.Fields{"server routine":"Timeout"}).Info(
+		//		"The context is done. Server routine timeout")
+		//	break Loop
+		//default:
+			//receive data
 		sendFileRequest, err := stream.Recv()
-
+		if ctx.Err() == context.Canceled {
+			log.WithFields(log.Fields{"server routine":"Timeout"}).Info(
+					"The context is done. Server routine timeout")
+			return errors.New("Client cancelled, abandoning.")
+		}
 		if err == io.EOF {
 			fmt.Println("io.EOF")
-			writerMap.Value(fileName).Close()
+			//writerMap.Value(fileName).Close()
 			sendFileResponse := &pb.SendFileResponse{BytesWritten:sum, Md5Sum:md5array}
 			return stream.SendAndClose(sendFileResponse)
 		}
 		if err != nil {
-			writerMap.Value(fileName).Close()
+			//writerMap.Value(fileName).Close()
 			log.WithFields(log.Fields{fileName: sendFileRequest.Md5Sum}).Info("stream receiving file data fails")
 			return err
 		}
@@ -78,7 +61,7 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 		chechSum := md5.Sum(sendFileRequest.Data)
 		md5str := fmt.Sprintf("%x", chechSum)
 		if sendFileRequest.Md5Sum != md5str {
-			writerMap.Value(fileName).Close()
+			//writerMap.Value(fileName).Close()
 			log.WithFields(log.Fields{fileName:md5str}).Info("Wrong file data received")
 			return errors.New("wrong file data.")
 		}
@@ -87,68 +70,35 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 		md5array = append(md5array, md5str)
 
 		fileName = filepath.Base(sendFileRequest.FileName)
+		//fmt.Printf("the filepath base is : %s \n", fileName)
 
-		f := openFile(fileName)
-
-		if f == nil {
-			return errors.New("creating file fails")
-		}
-		// write to file.
-		n, err := f.Write(sendFileRequest.Data)
+		r := bytes.NewReader(sendFileRequest.Data)
+		//fmt.Printf("the io.reader is %v\n", r)
+		n, err := pxStoreFile.StoreFile(ctx1, fileName, r)
 		if err != nil {
-			writerMap.Value(fileName).Close()
-			log.WithFields(log.Fields{fileName:"Write"}).Info("Writing to file fails")
-			return errors.New("fail when writing to file")
-		}
-		sum += int64(n)
-
-	}
-}
-
-func openFile(fileName string) (io.Writer){
-	writer := writerMap.Value(fileName)
-	fmt.Println(fileName)
-
-	if writer == nil {
-		//create file
-		volpath := hashtable.Get(fileName)
-		fmt.Printf("the volume path get from consistent hash table: %s\n", volpath)
-		if _, err := os.Stat(volpath); os.IsNotExist(err) {
-			err := os.MkdirAll(volpath, os.ModePerm)
-			if err != nil {
-				log.WithFields(log.Fields{volpath:"Create Dir"}).Info("Creating directory fails")
+			if n == -1 {
+				log.WithFields(log.Fields{"pvcpath":"Create Dir"}).Info("Creating directory fails")
+			} else if n == -2 {
+				log.WithFields(log.Fields{fileName:"create file"}).Info("Creating file fails")
+			} else if n == -3 {
+				log.WithFields(log.Fields{fileName:"Write"}).Info("Writing to file fails")
 			}
+			return errors.New("storing file fails")
 		}
-		newPath := filepath.Join(volpath, fileName)
-		f, err := os.Create(newPath)
-		//f, err := os.Create(fileName)
-		if err != nil {
-			f.Close()
-			log.WithFields(log.Fields{fileName:"create file"}).Info("Creating file fails")
-			return nil
-		}
-		//add to map
-		writerMap.Add(fileName, f)
+
+		sum += n
+		//}
+
 	}
-	return writerMap.Value(fileName)
 }
 
 
-//filepath.Split
-//filepath.Join
 func ServerRoutine(host string, port string, volumeProvider string) {
-	pvcpath = make(map[string]string)
-	for i := 1; i < 10; i++ {
-		pvc := "volume" + strconv.Itoa(i)
-		path := "/tmp/test-portworx-volume" + strconv.Itoa(i)
-		pvcpath[pvc] = path
+	if volumeProvider == "portworx" {
+		pxStoreFile = NewPxStoreFile()
 	}
-	for _, v := range pvcpath {
-		hashtable.Add(v)
-	}
+	//fmt.Printf("the px is %v\n", pxStoreFile)
 
-
-	writerMap.m = make(map[string]io.WriteCloser)
 	lis, err := net.Listen("tcp", host +":" + port)
 	if err != nil {
 		log.Fatalf("fail to listen on %v:%v, %v", port, err)

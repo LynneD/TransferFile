@@ -14,14 +14,13 @@ pb "github.com/LynneD/TransferFile/transferfile"
 )
 
 
-var filename string //etwd Join
-//var remotefilename string
+var filename string
 var md5array []string
 var length int
 
 
 func sendFile(client pb.TransferFileClient) {
-	ctx, cancel := context.WithTimeout(context.Background(), 20 * time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)// set as a parameter
 	defer cancel()
 
 	stream, err := client.SendFile(ctx)

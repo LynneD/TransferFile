@@ -1,8 +1,12 @@
 package server_routine
 
+import (
+	"io"
+	"context"
+)
 
 type StoreFiler interface {
-	GetPath() []string
-	StoreFile(fileName string) (int, error)
+	StoreFile(ctx context.Context, fileName string, reader io.Reader) (int, error)
+	CloseFile(fileName string) (error)
 }
 

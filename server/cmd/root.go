@@ -35,6 +35,7 @@ var rootCmd = &cobra.Command{
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	Run: func(cmd *cobra.Command, args []string) {
+
 		if len(port) == 0 {
 			cmd.Help()
 			return
@@ -46,6 +47,7 @@ var rootCmd = &cobra.Command{
 // Execute adds all child commands to the root command and sets flags appropriately.
 // This is called by main.main(). It only needs to happen once to the rootCmd.
 func Execute() {
+	//fmt.Println("rootCmd.excute")
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -65,7 +67,7 @@ func init() {
 	//rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	rootCmd.Flags().StringVarP(&host, "host", "H", "0.0.0.0", "The host you want to connect")
-	rootCmd.Flags().StringVarP(&port, "port", "p", "17361", "The port you use to talk to the host")
+	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port you use to talk to the host")
 	rootCmd.Flags().StringVarP(&volumeprovider, "volumeprovider", "P", "", "The provider's name of the volume you use")
 }
 
