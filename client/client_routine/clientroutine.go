@@ -75,7 +75,7 @@ func sendFile(client pb.TransferFileClient) {
 	// close stream and receive result from server
 	sendFileResponse, err := stream.CloseAndRecv()
 	if err != nil {
-		log.Fatalf("%v.CloseAndRecv() got error 5v, want %v", stream, err, nil)
+		log.Fatalf("%v.CloseAndRecv() got error %v", stream, err, nil)
 	}
 	log.Printf("Reply from server: %d bytes write", sendFileResponse.BytesWritten)
 	fmt.Println(reflect.DeepEqual(md5array, sendFileResponse.Md5Sum))
