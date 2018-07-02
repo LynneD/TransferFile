@@ -1,7 +1,7 @@
 package server_routine
 
 import (
-	"strconv"
+
 	"github.com/golang/groupcache/consistenthash"
 	"io"
 	"sync"
@@ -55,15 +55,23 @@ func NewPxStoreFile() *PxStoreFile {
 		hashtable: consistenthash.New(1, nil),
 		writerMap: NewMap(),
 	}
+	pvcs, err := GetPvcPath()
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	for i := 1; i < 10; i++ {
-		pvc := "volume" + strconv.Itoa(i)
-		path := "/tmp/test-portworx-volume" + strconv.Itoa(i)
-		px.pvcpath[pvc] = path
+	for k, v:= range pvcs {
+		fmt.Printf("the pvc is %v, the pvc paht is %v\n", k, v)
+		px.pvcpath[k] = v
+
 	}
 
 	for _,v := range px.pvcpath {
 		px.hashtable.Add(v)
+	}
+	fmt.Println("============new function ==============")
+	for k, v := range px.pvcpath {
+		fmt.Printf("the pvc is %v, and the path is %v\n", k, v)
 	}
 
 	return px
@@ -71,6 +79,10 @@ func NewPxStoreFile() *PxStoreFile {
 
 
 //package drop , taking too long
+// This function find the corresponding consistent hash directory and
+// write the content in the reader to the file in the corresponding directory.
+// If the file or directory doesn't exit, it create one and add to writeMap.
+//
 func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io.Reader) (int64, error) {
 	writer := px.writerMap.Value(fileName)
 	fmt.Println(fileName)
@@ -79,12 +91,12 @@ func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io
 		//create file
 		volpath := px.hashtable.Get(fileName)
 		fmt.Printf("the volume path get from consistent hash table: %s\n", volpath)
-		if _, err := os.Stat(volpath); os.IsNotExist(err) {
-			err := os.MkdirAll(volpath, os.ModePerm)
-			if err != nil {
-				return -1, errors.New("Create directory fails")
-			}
-		}
+		//if _, err := os.Stat(volpath); os.IsNotExist(err) {
+		//	err := os.MkdirAll(volpath, os.ModePerm)
+		//	if err != nil {
+		//		return -1, errors.New("Create directory fails")
+		//	}
+		//}
 		newPath := filepath.Join(volpath, fileName)
 		f, err := os.Create(newPath)
 
@@ -107,7 +119,3 @@ func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io
 	return n, nil
 }
 
-func (px *PxStoreFile) CloseFile(fileName string) error {
-	px.writerMap.Value(fileName).Close()
-	return nil
-}

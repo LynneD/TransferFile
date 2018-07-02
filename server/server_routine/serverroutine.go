@@ -97,7 +97,12 @@ func ServerRoutine(host string, port string, volumeProvider string) {
 	if volumeProvider == "portworx" {
 		pxStoreFile = NewPxStoreFile()
 	}
-	//fmt.Printf("the px is %v\n", pxStoreFile)
+
+	if pxStoreFile == nil {
+		log.WithFields(log.Fields{"Init":"Fail create PX"}).Info(
+			"Fail to create portworx storage file instance")
+		return
+	}
 
 	lis, err := net.Listen("tcp", host +":" + port)
 	if err != nil {

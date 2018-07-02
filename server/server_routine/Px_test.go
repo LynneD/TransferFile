@@ -4,9 +4,10 @@ import (
 	"fmt"
 	"bytes"
 	"testing"
+	"context"
 )
 
-// golang 4test
+//
 func TestNewPxStoreFile (t *testing.T) {
 	px := NewPxStoreFile()
 	for k, v := range px.pvcpath {
@@ -19,5 +20,20 @@ func TestStoreFile (t *testing.T) {
 	px := NewPxStoreFile()
 	data := []byte{'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd', '!'}
 	r := bytes.NewReader(data)
-	px.StoreFile("testcode.txt", r)
+	ctx := context.Background()
+
+
+	testCases := []string{
+		"test1.txt",
+		"test2.txt",
+		"test3.txt",
+		"test4.txt",
+	}
+
+	for _, s := range testCases {
+		px.StoreFile(ctx, s, r)
+
+
+
+	}
 }

@@ -20,7 +20,7 @@ var length int
 
 
 func sendFile(client pb.TransferFileClient) {
-	ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Second)// set as a parameter
+	ctx, cancel := context.WithTimeout(context.Background(), 20 * time.Second)// set as a parameter
 	defer cancel()
 
 	stream, err := client.SendFile(ctx)
