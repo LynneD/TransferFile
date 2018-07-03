@@ -23,7 +23,7 @@ func sendFile(client pb.TransferFileClient) {
 	ctx, cancel := context.WithTimeout(context.Background(), 20 * time.Second)// set as a parameter
 	defer cancel()
 
-	stream, err := client.SendFile(ctx)
+	stream, err := client.StoreSourceFile(ctx)
 	if err != nil {
 		log.Fatalf("%v.SendFile(_) = _, %v", client, err)
 	}

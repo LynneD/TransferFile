@@ -25,7 +25,7 @@ import (
 var host string
 var port string
 var volumeprovider string
-
+var deploymentname string
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -40,7 +40,7 @@ var rootCmd = &cobra.Command{
 			cmd.Help()
 			return
 		}
-		server_routine.ServerRoutine(host, port, volumeprovider)
+		server_routine.ServerRoutine(host, port, volumeprovider, deploymentname)
 	},
 }
 
@@ -69,5 +69,6 @@ func init() {
 	rootCmd.Flags().StringVarP(&host, "host", "H", "0.0.0.0", "The host you want to connect")
 	rootCmd.Flags().StringVarP(&port, "port", "p", "", "The port you use to talk to the host")
 	rootCmd.Flags().StringVarP(&volumeprovider, "volumeprovider", "P", "", "The provider's name of the volume you use")
+	rootCmd.Flags().StringVarP(&deploymentname, "deploymentname", "d", "", "The deployment used for running the server")
 }
 

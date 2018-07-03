@@ -10,20 +10,17 @@ import (
 	"fmt"
 	"errors"
 	"path/filepath"
-	//"github.com/LynneD/TransferFile/server/get_volume"
 	"bytes"
-
 	"context"
-
 	"time"
 )
 
-var pxStoreFile *PxStoreFile
+var FileManage FileManager
 
 type myServer struct {
 }
 
-func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
+func (s *myServer) StoreSourceFile(stream pb.TransferFile_StoreSourceFileServer) error {
 	var sum int64 = 0
 	var md5array []string
 	var fileName string
@@ -75,7 +72,7 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 
 		r := bytes.NewReader(sendFileRequest.Data)
 		//fmt.Printf("the io.reader is %v\n", r)
-		n, err := pxStoreFile.StoreFile(s_ctx, fileName, r)
+		n, err := FileManage.StoreFile(s_ctx, fileName, r)
 
 		if err != nil {
 			if n == -1 {
@@ -84,6 +81,8 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 				log.WithFields(log.Fields{fileName: "create file"}).Info("Creating file fails")
 			} else if n == -3 {
 				log.WithFields(log.Fields{fileName: "Write"}).Info("Writing to file fails")
+			} else if n == -4 {
+				log.WithFields(log.Fields{fileName: "doesn't have this path"}).Info("The path get from consistent hash table not exist")
 			}
 			return errors.New("storing file fails")
 		}
@@ -92,13 +91,28 @@ func (s *myServer) SendFile(stream pb.TransferFile_SendFileServer) error {
 
 }
 
+func (s *myServer) EnumerateFiles(ctx context.Context, request *pb.GetFileListRequest) (*pb.GetFileListResponse, error) {
+	var filelist []string
+    return &pb.GetFileListResponse{FileName:filelist}, nil
+}
 
-func ServerRoutine(host string, port string, volumeProvider string) {
+func (s *myServer) GetPVC(ctx context.Context, request *pb.GetPVCRequest) (*pb.GetPVCResponse, error) {
+    return &pb.GetPVCResponse{}, nil
+}
+
+func (s *myServer) DistributeResults(stream pb.TransferFile_DistributeResultsServer) error {
+	return nil
+}
+
+func ServerRoutine(host string, port string, volumeProvider string, deploymentName string) {
+
 	if volumeProvider == "portworx" {
-		pxStoreFile = NewPxStoreFile()
+		FileManage = NewPxFileManager(deploymentName)
+	} else if volumeProvider == "test" {
+		return
 	}
 
-	if pxStoreFile == nil {
+	if FileManage == nil {
 		log.WithFields(log.Fields{"Init":"Fail create PX"}).Info(
 			"Fail to create portworx storage file instance")
 		return

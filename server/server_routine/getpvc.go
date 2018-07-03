@@ -8,33 +8,50 @@ import (
 )
 
 
-func GetPvcPath() (map[string]string, error) {
-	k8sops := ops.Instance()
+func GetPvcPath(deploymentName string) (map[string]string, error) {
 
-	// get pod
-	var podName = "nginx-px"
-	pod, err := k8sops.GetPodByName(podName, "default")
-	if err != nil {
-		log.WithFields(log.Fields{podName: "Pod Not Found"}).Info(
-			"Can not found Pod")
-		return nil, errors.New("Can not found Pod")
-
-	}
-
-	//get pod's volumes
-	volumes := pod.Spec.Volumes
-
-	//get the list of volumes which are portworx volumes
 	volumeNames := make(map[string]string)
 	pvcMap := make(map[string]string)
 
+	k8sops := ops.Instance()
+	//fmt.Printf("the deployment is %s\n", deploymentName)
+	// get deployment
+	deployment, err := k8sops.GetDeployment(deploymentName, "default")
+
+	if err != nil {
+		log.WithFields(log.Fields{deploymentName: "Deployment doesn't found"}).Info(
+			"Can not found Deployment")
+		return nil, errors.New("Can not found Deployment")
+	}
+
+	// get pod
+	pods, err := k8sops.GetDeploymentPods(deployment)
+
+	if err != nil {
+		log.WithFields(log.Fields{deploymentName: "No pod"}).Info(
+			"Can't find the deploymnet's pods")
+		return nil, errors.New("Can't find the deploymnet's pods")
+	}
+
+
+
+	// get pod
+
+	volumes := pods[0].Spec.Volumes
+
+	//get the list of volumes which are portworx volumes
+
 
 	for _, v := range volumes {
+		//fmt.Println("==============volumes ====================")
 
-		if v.PersistentVolumeClaim != nil {
-			pvcName := v.PersistentVolumeClaim.ClaimName
+		//volumename := v.Name
+		//fmt.Printf("teh volume is :%v\n", volumename)
+		//fmt.Println("%v\n", v)
+		if v.VolumeSource.PersistentVolumeClaim != nil {
+			pvcName := v.VolumeSource.PersistentVolumeClaim.ClaimName
 
-			fmt.Printf("Found pvc: %s\n", pvcName)
+			//fmt.Printf("Found pvc: %s\n", pvcName)
 			pvc, err:= k8sops.GetPersistentVolumeClaim(pvcName,"default")
 			if err != nil {
 				log.WithFields(log.Fields{pvcName: "PVC Not Found"}).Info(
@@ -42,7 +59,7 @@ func GetPvcPath() (map[string]string, error) {
 				return nil, errors.New("Can not found PVC")
 			}
 
-			fmt.Printf("Found pvc: %s\n", pvcName)
+			//fmt.Printf("Found pvc: %s\n", pvcName)
 			provisioner, err:= k8sops.GetStorageProvisionerForPVC(pvc)
 			if err != nil {
 				log.WithFields(log.Fields{pvcName: "Provisioner Not Found"}).Info(
@@ -53,7 +70,6 @@ func GetPvcPath() (map[string]string, error) {
 				pvcMap[v.Name] = pvcName
 				volumeNames[v.Name] = v.Name
 			}
-
 		}
 	}
 
@@ -62,7 +78,7 @@ func GetPvcPath() (map[string]string, error) {
 	}
 
 	// get the volume's path
-	containers := pod.Spec.Containers
+	containers := pods[0].Spec.Containers
 	for _, c := range containers {
 		volMounts := c.VolumeMounts
 		for _, vol := range volMounts {

@@ -43,19 +43,19 @@ func (ma *MyMap) Value(k string) (v io.WriteCloser) {
 }
 
 
-type PxStoreFile struct {
+type PxFileManager struct {
 	pvcpath   map[string]string
 	hashtable *consistenthash.Map
 	writerMap *MyMap
 }
 
-func NewPxStoreFile() *PxStoreFile {
-	px := &PxStoreFile{
+func NewPxFileManager(deploymentName string) *PxFileManager {
+	px := &PxFileManager{
 		pvcpath: make(map[string]string),
 		hashtable: consistenthash.New(1, nil),
 		writerMap: NewMap(),
 	}
-	pvcs, err := GetPvcPath()
+	pvcs, err := GetPvcPath(deploymentName)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -83,7 +83,7 @@ func NewPxStoreFile() *PxStoreFile {
 // write the content in the reader to the file in the corresponding directory.
 // If the file or directory doesn't exit, it create one and add to writeMap.
 //
-func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io.Reader) (int64, error) {
+func (px *PxFileManager) StoreFile(ctx context.Context, fileName string, reader io.Reader) (int64, error) {
 	writer := px.writerMap.Value(fileName)
 	fmt.Println(fileName)
 
@@ -91,12 +91,13 @@ func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io
 		//create file
 		volpath := px.hashtable.Get(fileName)
 		fmt.Printf("the volume path get from consistent hash table: %s\n", volpath)
-		//if _, err := os.Stat(volpath); os.IsNotExist(err) {
-		//	err := os.MkdirAll(volpath, os.ModePerm)
-		//	if err != nil {
-		//		return -1, errors.New("Create directory fails")
-		//	}
-		//}
+		if _, err := os.Stat(volpath); os.IsNotExist(err) {
+			return -4, errors.New("The path get from consistent hash table not exist")
+			//err := os.MkdirAll(volpath, os.ModePerm)
+			//if err != nil {
+			//	return -1, errors.New("Create directory fails")
+			//}
+		}
 		newPath := filepath.Join(volpath, fileName)
 		f, err := os.Create(newPath)
 
@@ -111,11 +112,10 @@ func (px *PxStoreFile) StoreFile(ctx context.Context, fileName string, reader io
 
 	// write to file.
 
-	n, err := io.Copy(f, reader)// whether this stream bufio go by example writing files
+	n, err := io.Copy(f, reader) // whether this stream bufio go by example writing files
 	if err != nil {
 		px.writerMap.Value(fileName).Close()
 		return -3, errors.New("fail when writing to file")
 	}
 	return n, nil
 }
-

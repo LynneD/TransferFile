@@ -36,7 +36,7 @@ func (m *SendFileRequest) Reset()         { *m = SendFileRequest{} }
 func (m *SendFileRequest) String() string { return proto.CompactTextString(m) }
 func (*SendFileRequest) ProtoMessage()    {}
 func (*SendFileRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_file_a2564c9a147e9b56, []int{0}
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{0}
 }
 func (m *SendFileRequest) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SendFileRequest.Unmarshal(m, b)
@@ -89,7 +89,7 @@ func (m *SendFileResponse) Reset()         { *m = SendFileResponse{} }
 func (m *SendFileResponse) String() string { return proto.CompactTextString(m) }
 func (*SendFileResponse) ProtoMessage()    {}
 func (*SendFileResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_transfer_file_a2564c9a147e9b56, []int{1}
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{1}
 }
 func (m *SendFileResponse) XXX_Unmarshal(b []byte) error {
 	return xxx_messageInfo_SendFileResponse.Unmarshal(m, b)
@@ -123,9 +123,268 @@ func (m *SendFileResponse) GetMd5Sum() []string {
 	return nil
 }
 
+type GetFileListRequest struct {
+	RegExp               string   `protobuf:"bytes,1,opt,name=regExp" json:"regExp,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileListRequest) Reset()         { *m = GetFileListRequest{} }
+func (m *GetFileListRequest) String() string { return proto.CompactTextString(m) }
+func (*GetFileListRequest) ProtoMessage()    {}
+func (*GetFileListRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{2}
+}
+func (m *GetFileListRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileListRequest.Unmarshal(m, b)
+}
+func (m *GetFileListRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileListRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetFileListRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileListRequest.Merge(dst, src)
+}
+func (m *GetFileListRequest) XXX_Size() int {
+	return xxx_messageInfo_GetFileListRequest.Size(m)
+}
+func (m *GetFileListRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileListRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileListRequest proto.InternalMessageInfo
+
+func (m *GetFileListRequest) GetRegExp() string {
+	if m != nil {
+		return m.RegExp
+	}
+	return ""
+}
+
+type GetFileListResponse struct {
+	FileName             []string `protobuf:"bytes,1,rep,name=fileName" json:"fileName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetFileListResponse) Reset()         { *m = GetFileListResponse{} }
+func (m *GetFileListResponse) String() string { return proto.CompactTextString(m) }
+func (*GetFileListResponse) ProtoMessage()    {}
+func (*GetFileListResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{3}
+}
+func (m *GetFileListResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetFileListResponse.Unmarshal(m, b)
+}
+func (m *GetFileListResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetFileListResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetFileListResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetFileListResponse.Merge(dst, src)
+}
+func (m *GetFileListResponse) XXX_Size() int {
+	return xxx_messageInfo_GetFileListResponse.Size(m)
+}
+func (m *GetFileListResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetFileListResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetFileListResponse proto.InternalMessageInfo
+
+func (m *GetFileListResponse) GetFileName() []string {
+	if m != nil {
+		return m.FileName
+	}
+	return nil
+}
+
+type GetPVCRequest struct {
+	FileName             []string `protobuf:"bytes,1,rep,name=fileName" json:"fileName,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetPVCRequest) Reset()         { *m = GetPVCRequest{} }
+func (m *GetPVCRequest) String() string { return proto.CompactTextString(m) }
+func (*GetPVCRequest) ProtoMessage()    {}
+func (*GetPVCRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{4}
+}
+func (m *GetPVCRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetPVCRequest.Unmarshal(m, b)
+}
+func (m *GetPVCRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetPVCRequest.Marshal(b, m, deterministic)
+}
+func (dst *GetPVCRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPVCRequest.Merge(dst, src)
+}
+func (m *GetPVCRequest) XXX_Size() int {
+	return xxx_messageInfo_GetPVCRequest.Size(m)
+}
+func (m *GetPVCRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPVCRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetPVCRequest proto.InternalMessageInfo
+
+func (m *GetPVCRequest) GetFileName() []string {
+	if m != nil {
+		return m.FileName
+	}
+	return nil
+}
+
+// relation between files and pvcs?
+type GetPVCResponse struct {
+	Pvc                  []string `protobuf:"bytes,1,rep,name=pvc" json:"pvc,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetPVCResponse) Reset()         { *m = GetPVCResponse{} }
+func (m *GetPVCResponse) String() string { return proto.CompactTextString(m) }
+func (*GetPVCResponse) ProtoMessage()    {}
+func (*GetPVCResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{5}
+}
+func (m *GetPVCResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetPVCResponse.Unmarshal(m, b)
+}
+func (m *GetPVCResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetPVCResponse.Marshal(b, m, deterministic)
+}
+func (dst *GetPVCResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetPVCResponse.Merge(dst, src)
+}
+func (m *GetPVCResponse) XXX_Size() int {
+	return xxx_messageInfo_GetPVCResponse.Size(m)
+}
+func (m *GetPVCResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetPVCResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetPVCResponse proto.InternalMessageInfo
+
+func (m *GetPVCResponse) GetPvc() []string {
+	if m != nil {
+		return m.Pvc
+	}
+	return nil
+}
+
+type DistributeResultsRequest struct {
+	FileName             string   `protobuf:"bytes,1,opt,name=fileName" json:"fileName,omitempty"`
+	Md5Sum               string   `protobuf:"bytes,2,opt,name=md5Sum" json:"md5Sum,omitempty"`
+	Data                 []byte   `protobuf:"bytes,5,opt,name=data,proto3" json:"data,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DistributeResultsRequest) Reset()         { *m = DistributeResultsRequest{} }
+func (m *DistributeResultsRequest) String() string { return proto.CompactTextString(m) }
+func (*DistributeResultsRequest) ProtoMessage()    {}
+func (*DistributeResultsRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{6}
+}
+func (m *DistributeResultsRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DistributeResultsRequest.Unmarshal(m, b)
+}
+func (m *DistributeResultsRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DistributeResultsRequest.Marshal(b, m, deterministic)
+}
+func (dst *DistributeResultsRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DistributeResultsRequest.Merge(dst, src)
+}
+func (m *DistributeResultsRequest) XXX_Size() int {
+	return xxx_messageInfo_DistributeResultsRequest.Size(m)
+}
+func (m *DistributeResultsRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_DistributeResultsRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DistributeResultsRequest proto.InternalMessageInfo
+
+func (m *DistributeResultsRequest) GetFileName() string {
+	if m != nil {
+		return m.FileName
+	}
+	return ""
+}
+
+func (m *DistributeResultsRequest) GetMd5Sum() string {
+	if m != nil {
+		return m.Md5Sum
+	}
+	return ""
+}
+
+func (m *DistributeResultsRequest) GetData() []byte {
+	if m != nil {
+		return m.Data
+	}
+	return nil
+}
+
+type DistributeResultResponse struct {
+	BytesWritten         int64    `protobuf:"varint,1,opt,name=bytesWritten" json:"bytesWritten,omitempty"`
+	Md5Sum               []string `protobuf:"bytes,2,rep,name=md5Sum" json:"md5Sum,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DistributeResultResponse) Reset()         { *m = DistributeResultResponse{} }
+func (m *DistributeResultResponse) String() string { return proto.CompactTextString(m) }
+func (*DistributeResultResponse) ProtoMessage()    {}
+func (*DistributeResultResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_transfer_file_ede83d50ac380c14, []int{7}
+}
+func (m *DistributeResultResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DistributeResultResponse.Unmarshal(m, b)
+}
+func (m *DistributeResultResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DistributeResultResponse.Marshal(b, m, deterministic)
+}
+func (dst *DistributeResultResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DistributeResultResponse.Merge(dst, src)
+}
+func (m *DistributeResultResponse) XXX_Size() int {
+	return xxx_messageInfo_DistributeResultResponse.Size(m)
+}
+func (m *DistributeResultResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_DistributeResultResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DistributeResultResponse proto.InternalMessageInfo
+
+func (m *DistributeResultResponse) GetBytesWritten() int64 {
+	if m != nil {
+		return m.BytesWritten
+	}
+	return 0
+}
+
+func (m *DistributeResultResponse) GetMd5Sum() []string {
+	if m != nil {
+		return m.Md5Sum
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*SendFileRequest)(nil), "transferfile.SendFileRequest")
 	proto.RegisterType((*SendFileResponse)(nil), "transferfile.SendFileResponse")
+	proto.RegisterType((*GetFileListRequest)(nil), "transferfile.GetFileListRequest")
+	proto.RegisterType((*GetFileListResponse)(nil), "transferfile.GetFileListResponse")
+	proto.RegisterType((*GetPVCRequest)(nil), "transferfile.GetPVCRequest")
+	proto.RegisterType((*GetPVCResponse)(nil), "transferfile.GetPVCResponse")
+	proto.RegisterType((*DistributeResultsRequest)(nil), "transferfile.DistributeResultsRequest")
+	proto.RegisterType((*DistributeResultResponse)(nil), "transferfile.DistributeResultResponse")
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -140,7 +399,10 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type TransferFileClient interface {
-	SendFile(ctx context.Context, opts ...grpc.CallOption) (TransferFile_SendFileClient, error)
+	StoreSourceFile(ctx context.Context, opts ...grpc.CallOption) (TransferFile_StoreSourceFileClient, error)
+	EnumerateFiles(ctx context.Context, in *GetFileListRequest, opts ...grpc.CallOption) (*GetFileListResponse, error)
+	GetPVC(ctx context.Context, in *GetPVCRequest, opts ...grpc.CallOption) (*GetPVCResponse, error)
+	DistributeResults(ctx context.Context, opts ...grpc.CallOption) (TransferFile_DistributeResultsClient, error)
 }
 
 type transferFileClient struct {
@@ -151,30 +413,30 @@ func NewTransferFileClient(cc *grpc.ClientConn) TransferFileClient {
 	return &transferFileClient{cc}
 }
 
-func (c *transferFileClient) SendFile(ctx context.Context, opts ...grpc.CallOption) (TransferFile_SendFileClient, error) {
-	stream, err := c.cc.NewStream(ctx, &_TransferFile_serviceDesc.Streams[0], "/transferfile.TransferFile/SendFile", opts...)
+func (c *transferFileClient) StoreSourceFile(ctx context.Context, opts ...grpc.CallOption) (TransferFile_StoreSourceFileClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_TransferFile_serviceDesc.Streams[0], "/transferfile.TransferFile/StoreSourceFile", opts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &transferFileSendFileClient{stream}
+	x := &transferFileStoreSourceFileClient{stream}
 	return x, nil
 }
 
-type TransferFile_SendFileClient interface {
+type TransferFile_StoreSourceFileClient interface {
 	Send(*SendFileRequest) error
 	CloseAndRecv() (*SendFileResponse, error)
 	grpc.ClientStream
 }
 
-type transferFileSendFileClient struct {
+type transferFileStoreSourceFileClient struct {
 	grpc.ClientStream
 }
 
-func (x *transferFileSendFileClient) Send(m *SendFileRequest) error {
+func (x *transferFileStoreSourceFileClient) Send(m *SendFileRequest) error {
 	return x.ClientStream.SendMsg(m)
 }
 
-func (x *transferFileSendFileClient) CloseAndRecv() (*SendFileResponse, error) {
+func (x *transferFileStoreSourceFileClient) CloseAndRecv() (*SendFileResponse, error) {
 	if err := x.ClientStream.CloseSend(); err != nil {
 		return nil, err
 	}
@@ -185,35 +447,152 @@ func (x *transferFileSendFileClient) CloseAndRecv() (*SendFileResponse, error) {
 	return m, nil
 }
 
+func (c *transferFileClient) EnumerateFiles(ctx context.Context, in *GetFileListRequest, opts ...grpc.CallOption) (*GetFileListResponse, error) {
+	out := new(GetFileListResponse)
+	err := c.cc.Invoke(ctx, "/transferfile.TransferFile/EnumerateFiles", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *transferFileClient) GetPVC(ctx context.Context, in *GetPVCRequest, opts ...grpc.CallOption) (*GetPVCResponse, error) {
+	out := new(GetPVCResponse)
+	err := c.cc.Invoke(ctx, "/transferfile.TransferFile/GetPVC", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *transferFileClient) DistributeResults(ctx context.Context, opts ...grpc.CallOption) (TransferFile_DistributeResultsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_TransferFile_serviceDesc.Streams[1], "/transferfile.TransferFile/DistributeResults", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &transferFileDistributeResultsClient{stream}
+	return x, nil
+}
+
+type TransferFile_DistributeResultsClient interface {
+	Send(*DistributeResultsRequest) error
+	CloseAndRecv() (*DistributeResultResponse, error)
+	grpc.ClientStream
+}
+
+type transferFileDistributeResultsClient struct {
+	grpc.ClientStream
+}
+
+func (x *transferFileDistributeResultsClient) Send(m *DistributeResultsRequest) error {
+	return x.ClientStream.SendMsg(m)
+}
+
+func (x *transferFileDistributeResultsClient) CloseAndRecv() (*DistributeResultResponse, error) {
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	m := new(DistributeResultResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 // TransferFileServer is the server API for TransferFile service.
 type TransferFileServer interface {
-	SendFile(TransferFile_SendFileServer) error
+	StoreSourceFile(TransferFile_StoreSourceFileServer) error
+	EnumerateFiles(context.Context, *GetFileListRequest) (*GetFileListResponse, error)
+	GetPVC(context.Context, *GetPVCRequest) (*GetPVCResponse, error)
+	DistributeResults(TransferFile_DistributeResultsServer) error
 }
 
 func RegisterTransferFileServer(s *grpc.Server, srv TransferFileServer) {
 	s.RegisterService(&_TransferFile_serviceDesc, srv)
 }
 
-func _TransferFile_SendFile_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(TransferFileServer).SendFile(&transferFileSendFileServer{stream})
+func _TransferFile_StoreSourceFile_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(TransferFileServer).StoreSourceFile(&transferFileStoreSourceFileServer{stream})
 }
 
-type TransferFile_SendFileServer interface {
+type TransferFile_StoreSourceFileServer interface {
 	SendAndClose(*SendFileResponse) error
 	Recv() (*SendFileRequest, error)
 	grpc.ServerStream
 }
 
-type transferFileSendFileServer struct {
+type transferFileStoreSourceFileServer struct {
 	grpc.ServerStream
 }
 
-func (x *transferFileSendFileServer) SendAndClose(m *SendFileResponse) error {
+func (x *transferFileStoreSourceFileServer) SendAndClose(m *SendFileResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func (x *transferFileSendFileServer) Recv() (*SendFileRequest, error) {
+func (x *transferFileStoreSourceFileServer) Recv() (*SendFileRequest, error) {
 	m := new(SendFileRequest)
+	if err := x.ServerStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func _TransferFile_EnumerateFiles_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetFileListRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransferFileServer).EnumerateFiles(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/transferfile.TransferFile/EnumerateFiles",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransferFileServer).EnumerateFiles(ctx, req.(*GetFileListRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TransferFile_GetPVC_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPVCRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TransferFileServer).GetPVC(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/transferfile.TransferFile/GetPVC",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TransferFileServer).GetPVC(ctx, req.(*GetPVCRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _TransferFile_DistributeResults_Handler(srv interface{}, stream grpc.ServerStream) error {
+	return srv.(TransferFileServer).DistributeResults(&transferFileDistributeResultsServer{stream})
+}
+
+type TransferFile_DistributeResultsServer interface {
+	SendAndClose(*DistributeResultResponse) error
+	Recv() (*DistributeResultsRequest, error)
+	grpc.ServerStream
+}
+
+type transferFileDistributeResultsServer struct {
+	grpc.ServerStream
+}
+
+func (x *transferFileDistributeResultsServer) SendAndClose(m *DistributeResultResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func (x *transferFileDistributeResultsServer) Recv() (*DistributeResultsRequest, error) {
+	m := new(DistributeResultsRequest)
 	if err := x.ServerStream.RecvMsg(m); err != nil {
 		return nil, err
 	}
@@ -223,32 +602,57 @@ func (x *transferFileSendFileServer) Recv() (*SendFileRequest, error) {
 var _TransferFile_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "transferfile.TransferFile",
 	HandlerType: (*TransferFileServer)(nil),
-	Methods:     []grpc.MethodDesc{},
+	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "EnumerateFiles",
+			Handler:    _TransferFile_EnumerateFiles_Handler,
+		},
+		{
+			MethodName: "GetPVC",
+			Handler:    _TransferFile_GetPVC_Handler,
+		},
+	},
 	Streams: []grpc.StreamDesc{
 		{
-			StreamName:    "SendFile",
-			Handler:       _TransferFile_SendFile_Handler,
+			StreamName:    "StoreSourceFile",
+			Handler:       _TransferFile_StoreSourceFile_Handler,
+			ClientStreams: true,
+		},
+		{
+			StreamName:    "DistributeResults",
+			Handler:       _TransferFile_DistributeResults_Handler,
 			ClientStreams: true,
 		},
 	},
 	Metadata: "transfer_file.proto",
 }
 
-func init() { proto.RegisterFile("transfer_file.proto", fileDescriptor_transfer_file_a2564c9a147e9b56) }
+func init() { proto.RegisterFile("transfer_file.proto", fileDescriptor_transfer_file_ede83d50ac380c14) }
 
-var fileDescriptor_transfer_file_a2564c9a147e9b56 = []byte{
-	// 200 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x2e, 0x29, 0x4a, 0xcc,
-	0x2b, 0x4e, 0x4b, 0x2d, 0x8a, 0x4f, 0xcb, 0xcc, 0x49, 0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
-	0xe2, 0x81, 0x09, 0x82, 0xc4, 0x94, 0x22, 0xb9, 0xf8, 0x83, 0x53, 0xf3, 0x52, 0xdc, 0x32, 0x73,
-	0x52, 0x83, 0x52, 0x0b, 0x4b, 0x53, 0x8b, 0x4b, 0x84, 0xa4, 0xb8, 0x38, 0x40, 0x52, 0x7e, 0x89,
-	0xb9, 0xa9, 0x12, 0x8c, 0x0a, 0x8c, 0x1a, 0x9c, 0x41, 0x70, 0xbe, 0x90, 0x18, 0x17, 0x5b, 0x6e,
-	0x8a, 0x69, 0x70, 0x69, 0xae, 0x04, 0x13, 0x58, 0x06, 0xca, 0x13, 0x12, 0xe2, 0x62, 0x49, 0x49,
-	0x2c, 0x49, 0x94, 0x60, 0x56, 0x60, 0xd4, 0xe0, 0x09, 0x02, 0xb3, 0x95, 0xfc, 0xb8, 0x04, 0x10,
-	0x46, 0x17, 0x17, 0xe4, 0xe7, 0x15, 0xa7, 0x0a, 0x29, 0x71, 0xf1, 0x24, 0x55, 0x96, 0xa4, 0x16,
-	0x87, 0x17, 0x65, 0x96, 0x94, 0xa4, 0xe6, 0x81, 0xcd, 0x67, 0x0e, 0x42, 0x11, 0x43, 0xb1, 0x83,
-	0x19, 0x61, 0x87, 0x51, 0x2c, 0x17, 0x4f, 0x08, 0xd4, 0xe9, 0x20, 0x33, 0x85, 0x7c, 0xb9, 0x38,
-	0x60, 0xe6, 0x0b, 0xc9, 0xea, 0x21, 0xfb, 0x4a, 0x0f, 0xcd, 0x4b, 0x52, 0x72, 0xb8, 0xa4, 0x21,
-	0xce, 0x52, 0x62, 0xd0, 0x60, 0x4c, 0x62, 0x03, 0x07, 0x8f, 0x31, 0x20, 0x00, 0x00, 0xff, 0xff,
-	0x17, 0x52, 0xeb, 0x5b, 0x35, 0x01, 0x00, 0x00,
+var fileDescriptor_transfer_file_ede83d50ac380c14 = []byte{
+	// 370 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0x5d, 0x4f, 0xea, 0x40,
+	0x10, 0xbd, 0xa5, 0xf7, 0x36, 0xf7, 0x4e, 0x7a, 0x01, 0x97, 0x84, 0x34, 0xf5, 0x23, 0xb8, 0x0f,
+	0x86, 0x44, 0x43, 0xa2, 0xc6, 0x5f, 0xa0, 0xc8, 0x8b, 0x21, 0xa6, 0x25, 0x10, 0x9f, 0x4c, 0x0b,
+	0x03, 0x69, 0x42, 0x3f, 0xdc, 0x9d, 0x1a, 0xfd, 0xd1, 0xfe, 0x07, 0xd3, 0xd2, 0x42, 0x6b, 0x41,
+	0x5f, 0x78, 0xdb, 0x99, 0x39, 0x7b, 0x66, 0xf6, 0x9c, 0x59, 0x68, 0x91, 0x70, 0x02, 0x39, 0x47,
+	0xf1, 0x3c, 0xf7, 0x96, 0xd8, 0x8b, 0x44, 0x48, 0x21, 0xd3, 0xf3, 0x64, 0x92, 0xe3, 0x4f, 0xd0,
+	0xb0, 0x31, 0x98, 0xdd, 0x7b, 0x4b, 0xb4, 0xf0, 0x25, 0x46, 0x49, 0xcc, 0x84, 0xbf, 0x49, 0x69,
+	0xe8, 0xf8, 0x68, 0x28, 0x1d, 0xa5, 0xfb, 0xcf, 0x5a, 0xc7, 0xac, 0x0d, 0x9a, 0x3f, 0xbb, 0xb1,
+	0x63, 0xdf, 0xa8, 0xa5, 0x95, 0x2c, 0x62, 0x0c, 0x7e, 0xcf, 0x1c, 0x72, 0x0c, 0xb5, 0xa3, 0x74,
+	0x75, 0x2b, 0x3d, 0xf3, 0x21, 0x34, 0x37, 0xd4, 0x32, 0x0a, 0x03, 0x89, 0x8c, 0x83, 0xee, 0xbe,
+	0x13, 0xca, 0x89, 0xf0, 0x88, 0x30, 0x48, 0xf9, 0x55, 0xab, 0x94, 0x2b, 0xf5, 0x50, 0x37, 0x3d,
+	0xf8, 0x05, 0xb0, 0x01, 0x52, 0x42, 0xf7, 0xe0, 0x49, 0xca, 0xa7, 0x6d, 0x83, 0x26, 0x70, 0xd1,
+	0x7f, 0x8b, 0xb2, 0x59, 0xb3, 0x88, 0x5f, 0x42, 0xab, 0x84, 0xce, 0x06, 0x28, 0x3f, 0x4e, 0x2d,
+	0x3e, 0x8e, 0x9f, 0xc3, 0xff, 0x01, 0xd2, 0xe3, 0xf8, 0x76, 0xbb, 0x12, 0x65, 0x30, 0x87, 0x7a,
+	0x0e, 0xce, 0xa8, 0x9b, 0xa0, 0x46, 0xaf, 0xd3, 0x0c, 0x98, 0x1c, 0xb9, 0x0b, 0xc6, 0x9d, 0x27,
+	0x49, 0x78, 0x6e, 0x4c, 0x89, 0x06, 0xf1, 0x92, 0xe4, 0x3e, 0x54, 0xfe, 0x53, 0x50, 0x79, 0x5c,
+	0xed, 0xb1, 0x0f, 0xb5, 0xaf, 0x3e, 0x6a, 0xa0, 0x8f, 0xb2, 0x4d, 0x49, 0x54, 0x64, 0x23, 0x68,
+	0xd8, 0x14, 0x0a, 0xb4, 0xc3, 0x58, 0x4c, 0x31, 0x4d, 0x1d, 0xf7, 0x8a, 0xbb, 0xd4, 0xfb, 0xb2,
+	0x48, 0xe6, 0xc9, 0xae, 0xf2, 0x6a, 0x3c, 0xfe, 0xab, 0xab, 0xb0, 0x09, 0xd4, 0xfb, 0x41, 0xec,
+	0xa3, 0x70, 0x28, 0xe5, 0x94, 0xac, 0x53, 0xbe, 0x55, 0xb5, 0xdc, 0x3c, 0xfd, 0x06, 0x91, 0x53,
+	0xb3, 0x3e, 0x68, 0x2b, 0x7f, 0xd8, 0x61, 0x05, 0xbe, 0xb1, 0xd8, 0x3c, 0xda, 0x5e, 0x5c, 0xd3,
+	0x2c, 0xe0, 0xa0, 0x62, 0x21, 0x3b, 0x2b, 0x5f, 0xda, 0xe5, 0xb1, 0xf9, 0x03, 0xae, 0x28, 0x84,
+	0xab, 0xa5, 0xbf, 0xf3, 0xfa, 0x33, 0x00, 0x00, 0xff, 0xff, 0xef, 0x15, 0x5e, 0xf0, 0xb4, 0x03,
+	0x00, 0x00,
 }
