@@ -16,8 +16,8 @@ message SendFileRequest {
 }
 
 message SendFileResponse {
-    int64 bytesWritten = 1;
-    repeated string md5Sum = 2;
+    int64 bytesWritten = 2;
+    repeated string md5Sum = 3;
 }
 
 message GetFileListRequest {
